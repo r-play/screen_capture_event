@@ -57,18 +57,24 @@ public class ScreenCaptureEventPlugin implements FlutterPlugin, MethodCallHandle
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
             case "prevent_screenshot":
+                Activity activity = activityPluginBinding.getActivity();
+                if(activity == null) break;
+
                 if ((boolean) call.arguments) {
-                    activityPluginBinding.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                    activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
                 } else {
-                    activityPluginBinding.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                    activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
                 }
                 break;
             case "isRecording":
                 result.success(screenRecording);
                 break;
             case "request_permission":
-                if (ContextCompat.checkSelfPermission(activityPluginBinding.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activityPluginBinding.getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
+                Activity activity = activityPluginBinding.getActivity();
+                if(activity == null) break;
+
+                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
                 }
                 break;
             case "watch":
