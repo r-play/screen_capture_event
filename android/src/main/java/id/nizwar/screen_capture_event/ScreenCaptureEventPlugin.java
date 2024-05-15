@@ -56,9 +56,11 @@ public class ScreenCaptureEventPlugin implements FlutterPlugin, MethodCallHandle
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+        if(activityPluginBinding == null) return;
+        Activity activity = activityPluginBinding.getActivity();
+
         switch (call.method) {
             case "prevent_screenshot":
-                Activity activity = activityPluginBinding.getActivity();
                 if(activity == null) break;
 
                 if ((boolean) call.arguments) {
@@ -71,7 +73,6 @@ public class ScreenCaptureEventPlugin implements FlutterPlugin, MethodCallHandle
                 result.success(screenRecording);
                 break;
             case "request_permission":
-                Activity activity = activityPluginBinding.getActivity();
                 if(activity == null) break;
 
                 if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
