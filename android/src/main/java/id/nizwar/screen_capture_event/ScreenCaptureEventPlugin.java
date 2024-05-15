@@ -1,6 +1,7 @@
 package id.nizwar.screen_capture_event;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
